@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1640" height="1070" viewBox="0 0 1640 1070" font-family="Helvetica, Arial, sans-serif">
+<rect width="1640" height="1070" fill="#ffffff"/>
+<defs><marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="14" markerHeight="14" orient="auto-start-reverse"><path d="M1 1 11 6 1 11z" fill="#ffffff" stroke="#455867" stroke-width="1.4"/></marker>
+<marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M1 1 9 5 1 9" fill="none" stroke="#455867" stroke-width="1.6"/></marker></defs>
+<rect x="250" y="20" width="1090" height="1030" rx="16" fill="none" stroke="#02756e" stroke-width="2"/>
+<text x="270" y="46" font-size="17" font-weight="700" fill="#02756e">MedFlow Solutions</text>
+<path d="M136.0 458.0 L300.0 160.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M136.0 458.0 L300.0 270.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M136.0 458.0 L300.0 380.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M136.0 458.0 L300.0 490.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M136.0 458.0 L300.0 600.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M136.0 458.0 L300.0 710.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M110.0 420.0 L110.0 92.0 L645.0 92.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M1444.0 203.0 L1290.0 160.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M1444.0 203.0 L1290.0 270.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M1444.0 533.0 L1290.0 380.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M1444.0 533.0 L1290.0 490.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M1444.0 533.0 L1290.0 600.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M1444.0 533.0 L1290.0 710.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M1444.0 973.0 L1290.0 850.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M1444.0 973.0 L1290.0 960.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M1496.0 531.0 L1570.0 531.0 L1570.0 102.0 L937.5 102.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M1496.0 971.0 L1600.0 971.0 L1600.0 82.0 L937.5 82.0" fill="none" stroke="#455867" stroke-width="1.5" />
+<path d="M1470.0 307.0 L1470.0 491.0" fill="none" stroke="#455867" stroke-width="1.5" marker-end="url(#tri)"/>
+<path d="M1470.0 736.0 L1470.0 645.0" fill="none" stroke="#455867" stroke-width="1.5" marker-end="url(#tri)"/>
+<path d="M620.0 380.0 L670.0 380.0" fill="none" stroke="#455867" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#seta)"/>
+<text x="645.0" y="370" font-size="13" text-anchor="middle" fill="#455867">«include»</text>
+<ellipse cx="795" cy="92" rx="150" ry="32" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="795" y="97" font-size="15" text-anchor="middle" fill="#0e1f33">UC02 Autenticar-se</text>
+<ellipse cx="460" cy="160" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="460" y="165" font-size="15" text-anchor="middle" fill="#0e1f33">UC01 Cadastrar conta</text>
+<ellipse cx="460" cy="270" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="460" y="275" font-size="15" text-anchor="middle" fill="#0e1f33">UC03 Enviar receita</text>
+<ellipse cx="460" cy="380" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="460" y="376" font-size="15" text-anchor="middle" fill="#0e1f33">UC04 Montar Box e</text>
+<text x="460" y="394" font-size="15" text-anchor="middle" fill="#0e1f33">confirmar pedido</text>
+<ellipse cx="460" cy="490" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="460" y="495" font-size="15" text-anchor="middle" fill="#0e1f33">UC05 Acompanhar pedido</text>
+<ellipse cx="460" cy="600" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="460" y="605" font-size="15" text-anchor="middle" fill="#0e1f33">UC15 Cancelar pedido</text>
+<ellipse cx="460" cy="710" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="460" y="706" font-size="15" text-anchor="middle" fill="#0e1f33">UC12 Gerenciar meus</text>
+<text x="460" y="724" font-size="15" text-anchor="middle" fill="#0e1f33">dados (LGPD)</text>
+<ellipse cx="1130" cy="160" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="1130" y="165" font-size="15" text-anchor="middle" fill="#0e1f33">UC06 Analisar receita</text>
+<ellipse cx="1130" cy="270" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="1130" y="275" font-size="15" text-anchor="middle" fill="#0e1f33">UC13 Gerenciar usuários</text>
+<ellipse cx="1130" cy="380" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="1130" y="376" font-size="15" text-anchor="middle" fill="#0e1f33">UC07 Separar e</text>
+<text x="1130" y="394" font-size="15" text-anchor="middle" fill="#0e1f33">finalizar Box</text>
+<ellipse cx="1130" cy="490" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="1130" y="486" font-size="15" text-anchor="middle" fill="#0e1f33">UC08 Gerenciar</text>
+<text x="1130" y="504" font-size="15" text-anchor="middle" fill="#0e1f33">medicamentos e lotes</text>
+<ellipse cx="1130" cy="600" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="1130" y="605" font-size="15" text-anchor="middle" fill="#0e1f33">UC09 Monitorar alertas</text>
+<ellipse cx="1130" cy="710" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="1130" y="715" font-size="15" text-anchor="middle" fill="#0e1f33">UC14 Consultar indicadores</text>
+<ellipse cx="1130" cy="850" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="1130" y="855" font-size="15" text-anchor="middle" fill="#0e1f33">UC10 Iniciar rota</text>
+<ellipse cx="1130" cy="960" rx="160" ry="34" fill="#f2f8f7" stroke="#02756e" stroke-width="1.6" />
+<text x="1130" y="956" font-size="15" text-anchor="middle" fill="#0e1f33">UC11 Confirmar entrega</text>
+<text x="1130" y="974" font-size="15" text-anchor="middle" fill="#0e1f33">ou registrar ocorrência</text>
+<ellipse cx="795" cy="380" rx="125" ry="34" fill="#ffffff" stroke="#02756e" stroke-width="1.6" stroke-dasharray="7 5"/>
+<text x="795" y="376" font-size="15" text-anchor="middle" fill="#0e1f33">Reservar estoque</text>
+<text x="795" y="394" font-size="15" text-anchor="middle" fill="#0e1f33">(FEFO, tudo ou nada)</text>
+<g fill="none" stroke="#0e1f33" stroke-width="2.6" stroke-linecap="round"><circle cx="110" cy="434" r="12" fill="#ffffff"/><path d="M110 446V480M88 458H132M110 480L92 514M110 480L128 514"/></g>
+<text x="110" y="536" font-size="15" font-weight="700" text-anchor="middle" fill="#0e1f33">Paciente</text>
+<g fill="none" stroke="#0e1f33" stroke-width="2.6" stroke-linecap="round"><circle cx="1470" cy="179" r="12" fill="#ffffff"/><path d="M1470 191V225M1448 203H1492M1470 225L1452 259M1470 225L1488 259"/></g>
+<text x="1470" y="281" font-size="15" font-weight="700" text-anchor="middle" fill="#0e1f33">Farmacêutico RT</text>
+<text x="1470" y="299" font-size="15" font-weight="400" text-anchor="middle" fill="#0e1f33">(perfil Administrador)</text>
+<g fill="none" stroke="#0e1f33" stroke-width="2.6" stroke-linecap="round"><circle cx="1470" cy="509" r="12" fill="#ffffff"/><path d="M1470 521V555M1448 533H1492M1470 555L1452 589M1470 555L1488 589"/></g>
+<text x="1470" y="611" font-size="15" font-weight="700" text-anchor="middle" fill="#0e1f33">Equipe da farmácia</text>
+<g fill="none" stroke="#0e1f33" stroke-width="2.6" stroke-linecap="round"><circle cx="1470" cy="754" r="12" fill="#ffffff"/><path d="M1470 766V800M1448 778H1492M1470 800L1452 834M1470 800L1488 834"/></g>
+<text x="1470" y="856" font-size="15" font-weight="700" text-anchor="middle" fill="#0e1f33">Operador</text>
+<text x="1470" y="874" font-size="15" font-weight="400" text-anchor="middle" fill="#0e1f33">(perfil Funcionário)</text>
+<g fill="none" stroke="#0e1f33" stroke-width="2.6" stroke-linecap="round"><circle cx="1470" cy="949" r="12" fill="#ffffff"/><path d="M1470 961V995M1448 973H1492M1470 995L1452 1029M1470 995L1488 1029"/></g>
+<text x="1470" y="1051" font-size="15" font-weight="700" text-anchor="middle" fill="#0e1f33">Entregador</text>
+</svg>

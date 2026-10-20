@@ -1,0 +1,17 @@
+flowchart TB
+  SPA["<b>Navegador</b> (desktop ou celular)<br/>App Web · Vue 3 + Vite · Pinia · Vue Router · Axios"]
+  API["<b>MedFlow.Api</b> · ASP.NET Core 8<br/>Controllers finos · JWT Bearer · Policies por perfil<br/>CORS restrito · limite de tentativas · ProblemDetails · Swagger"]
+  APP["<b>MedFlow.Application</b><br/>Casos de uso: Auth · Receita · Pedido · Entrega · Catálogo · Painel · Privacidade<br/>Contratos: IAppDbContext · IPasswordHasher · ITokenService · IArquivoStorage"]
+  DOM["<b>MedFlow.Domain</b> (sem dependências externas)<br/>Pedido (máquina de estados) · Lote · Receita · Tratamento · ReservaEstoqueFefo"]
+  INF["<b>MedFlow.Infrastructure</b><br/>EF Core + Pomelo · PBKDF2 · JWT · armazenamento de receitas"]
+  DB[("MySQL 8")]
+  FS[("Pasta privada de arquivos")]
+  SPA -- "HTTPS · JSON · Authorization: Bearer" --> API
+  API -- "chama" --> APP
+  APP -- "usa as regras" --> DOM
+  INF -- "implementa os contratos" --> APP
+  API -. "registra na injeção de dependência" .-> INF
+  INF --> DB
+  INF --> FS
+  classDef destaque fill:#dbf0ec,stroke:#02756e,stroke-width:2px
+  class DOM destaque

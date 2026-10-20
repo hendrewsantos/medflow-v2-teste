@@ -1,0 +1,64 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DD4FAA6D-7B0C-5AEF-88C9-B40B11BEAE23}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8D0C14FC-5E6F-5A7E-A2A7-F2599769278C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedFlow.Domain", "src\MedFlow.Domain\MedFlow.Domain.csproj", "{8F65487E-1110-54E8-9BB0-26116903C387}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedFlow.Application", "src\MedFlow.Application\MedFlow.Application.csproj", "{CA7F0124-BFCD-5EE1-80BB-8829082C1BC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedFlow.Infrastructure", "src\MedFlow.Infrastructure\MedFlow.Infrastructure.csproj", "{3A96CD51-15B7-5830-A97F-D315F7963A6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedFlow.Api", "src\MedFlow.Api\MedFlow.Api.csproj", "{36BC8B23-5D20-5EC2-AE03-6D9DF3DB6985}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedFlow.Domain.Tests", "tests\MedFlow.Domain.Tests\MedFlow.Domain.Tests.csproj", "{7064C9A8-5AC5-5151-B54C-190FBCF535BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedFlow.Application.Tests", "tests\MedFlow.Application.Tests\MedFlow.Application.Tests.csproj", "{0325097D-E9EC-545B-AA22-43AE04DE6FAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F65487E-1110-54E8-9BB0-26116903C387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F65487E-1110-54E8-9BB0-26116903C387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F65487E-1110-54E8-9BB0-26116903C387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F65487E-1110-54E8-9BB0-26116903C387}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA7F0124-BFCD-5EE1-80BB-8829082C1BC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA7F0124-BFCD-5EE1-80BB-8829082C1BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA7F0124-BFCD-5EE1-80BB-8829082C1BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA7F0124-BFCD-5EE1-80BB-8829082C1BC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A96CD51-15B7-5830-A97F-D315F7963A6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A96CD51-15B7-5830-A97F-D315F7963A6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A96CD51-15B7-5830-A97F-D315F7963A6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A96CD51-15B7-5830-A97F-D315F7963A6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36BC8B23-5D20-5EC2-AE03-6D9DF3DB6985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36BC8B23-5D20-5EC2-AE03-6D9DF3DB6985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36BC8B23-5D20-5EC2-AE03-6D9DF3DB6985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36BC8B23-5D20-5EC2-AE03-6D9DF3DB6985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7064C9A8-5AC5-5151-B54C-190FBCF535BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7064C9A8-5AC5-5151-B54C-190FBCF535BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7064C9A8-5AC5-5151-B54C-190FBCF535BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7064C9A8-5AC5-5151-B54C-190FBCF535BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0325097D-E9EC-545B-AA22-43AE04DE6FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0325097D-E9EC-545B-AA22-43AE04DE6FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0325097D-E9EC-545B-AA22-43AE04DE6FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0325097D-E9EC-545B-AA22-43AE04DE6FAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8F65487E-1110-54E8-9BB0-26116903C387} = {DD4FAA6D-7B0C-5AEF-88C9-B40B11BEAE23}
+		{CA7F0124-BFCD-5EE1-80BB-8829082C1BC8} = {DD4FAA6D-7B0C-5AEF-88C9-B40B11BEAE23}
+		{3A96CD51-15B7-5830-A97F-D315F7963A6C} = {DD4FAA6D-7B0C-5AEF-88C9-B40B11BEAE23}
+		{36BC8B23-5D20-5EC2-AE03-6D9DF3DB6985} = {DD4FAA6D-7B0C-5AEF-88C9-B40B11BEAE23}
+		{7064C9A8-5AC5-5151-B54C-190FBCF535BD} = {8D0C14FC-5E6F-5A7E-A2A7-F2599769278C}
+		{0325097D-E9EC-545B-AA22-43AE04DE6FAD} = {8D0C14FC-5E6F-5A7E-A2A7-F2599769278C}
+	EndGlobalSection
+EndGlobal

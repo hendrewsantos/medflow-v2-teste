@@ -1,0 +1,32 @@
+sequenceDiagram
+  autonumber
+  actor U as Usuário
+  participant W as App Web (Vue 3)
+  participant C as AuthController
+  participant S as AuthService
+  participant H as PasswordHasher (PBKDF2)
+  participant DB as MySQL (EF Core)
+  participant T as JwtTokenService
+  U->>W: informa e-mail e senha
+  W->>C: POST /api/auth/login (HTTPS)
+  C->>S: LoginAsync(email, senha)
+  S->>DB: busca usuário pelo e-mail
+  DB-->>S: usuário (SenhaHash, FalhasLogin, BloqueadoAte)
+  alt conta bloqueada (RN17)
+    S-->>C: ContaBloqueadaException
+    C-->>W: 423 Locked (ProblemDetails)
+  else conta liberada
+    S->>H: Verificar(senha, SenhaHash)
+    H-->>S: recalcula PBKDF2 com o salt e compara em tempo constante
+    alt senha confere
+      S->>DB: zera FalhasLogin
+      S->>T: Gerar(usuário)
+      T-->>S: JWT HS256 (sub, role, exp = 60 min)
+      S-->>C: AuthResponse
+      C-->>W: 200 OK { token, usuario }
+      W->>W: guarda o token na sessão e abre a tela do perfil
+    else senha incorreta
+      S->>DB: FalhasLogin + 1 (na 5ª falha, bloqueia por 15 min)
+      C-->>W: 401 "E-mail ou senha incorretos."
+    end
+  end

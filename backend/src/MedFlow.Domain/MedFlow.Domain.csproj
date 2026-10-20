@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Camada de Domínio: entidades e regras de negócio puras, sem dependências externas. -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="MedFlow.Domain.Tests" />
+    <InternalsVisibleTo Include="MedFlow.Application.Tests" />
+  </ItemGroup>
+</Project>

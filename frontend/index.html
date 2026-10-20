@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <link rel="icon" type="image/png" href="/simbolo-medflow.png" />
+    <title>MedFlow Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Lexend:wght@400;500;600;700&display=swap" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- VLibras (Governo Federal): tradução do conteúdo para Libras — requisito de acessibilidade do PIM. -->
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>if (window.VLibras) new window.VLibras.Widget('https://vlibras.gov.br/app')</script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

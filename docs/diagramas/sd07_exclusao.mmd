@@ -1,0 +1,24 @@
+sequenceDiagram
+  autonumber
+  actor P as Paciente (titular)
+  participant W as App Web
+  participant C as PrivacidadeController
+  participant S as PrivacidadeService
+  participant A as ArquivoStorage
+  participant DB as MySQL
+  P->>W: "Excluir minha conta" e digita EXCLUIR
+  W->>C: DELETE /api/privacidade/minha-conta
+  C->>S: ExcluirContaAsync(titular)
+  S->>DB: há Box em separação, pronta ou em rota?
+  alt sim
+    C-->>W: 409 "A exclusão fica disponível após a entrega" (RN16)
+  else não
+    S->>S: cancela pedidos Pendentes e libera a reserva
+    loop cada receita do titular
+      S->>A: ExcluirAsync(arquivo)
+    end
+    S->>S: usuário.Anonimizar(): apaga nome, e-mail, CPF, endereço e telefone, remove a senha e revoga os consentimentos
+    S->>DB: SaveChanges — pedidos e movimentações ficam sem identificar o titular (art. 16, I)
+    C-->>W: 204 No Content
+    W-->>P: sessão encerrada
+  end

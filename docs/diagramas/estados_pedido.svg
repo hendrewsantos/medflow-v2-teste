@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640" font-family="Liberation Sans, Helvetica, Arial, sans-serif">
+<rect width="1000" height="640" fill="#ffffff"/>
+<defs><marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M1 1 9 5 1 9z" fill="#455867"/></marker></defs>
+<circle cx="445.0" cy="22" r="9" fill="#0e1f33"/>
+<path d="M445.0 31 V68" fill="none" stroke="#455867" stroke-width="1.8" marker-end="url(#s)"/>
+<text x="431.0" y="54" font-size="14" text-anchor="end" fill="#0e1f33">confirmação com reserva (RN03)</text>
+<rect x="330" y="70" width="230" height="58" rx="12" fill="#f2f8f7" stroke="#02756e" stroke-width="2"/>
+<text x="445.0" y="95" font-size="17" font-weight="700" text-anchor="middle" fill="#0e1f33">Pendente</text>
+<text x="445.0" y="115" font-size="14" text-anchor="middle" fill="#455867">Receita em análise</text>
+<rect x="330" y="190" width="230" height="58" rx="12" fill="#f2f8f7" stroke="#02756e" stroke-width="2"/>
+<text x="445.0" y="215" font-size="17" font-weight="700" text-anchor="middle" fill="#0e1f33">EmSeparacao</text>
+<text x="445.0" y="235" font-size="14" text-anchor="middle" fill="#455867">Em separação</text>
+<rect x="330" y="310" width="230" height="58" rx="12" fill="#f2f8f7" stroke="#02756e" stroke-width="2"/>
+<text x="445.0" y="335" font-size="17" font-weight="700" text-anchor="middle" fill="#0e1f33">AguardandoEntregador</text>
+<text x="445.0" y="355" font-size="14" text-anchor="middle" fill="#455867">Pronta para entrega</text>
+<rect x="330" y="430" width="230" height="58" rx="12" fill="#f2f8f7" stroke="#02756e" stroke-width="2"/>
+<text x="445.0" y="455" font-size="17" font-weight="700" text-anchor="middle" fill="#0e1f33">EmRota</text>
+<text x="445.0" y="475" font-size="14" text-anchor="middle" fill="#455867">Saiu para entrega</text>
+<rect x="330" y="550" width="230" height="58" rx="12" fill="#f5f7f9" stroke="#455867" stroke-width="2"/>
+<text x="445.0" y="575" font-size="17" font-weight="700" text-anchor="middle" fill="#0e1f33">Entregue</text>
+<text x="445.0" y="595" font-size="14" text-anchor="middle" fill="#455867">Entregue</text>
+<path d="M445.0 128 V188" fill="none" stroke="#455867" stroke-width="1.8" marker-end="url(#s)"/>
+<text x="431.0" y="150" font-size="14" text-anchor="end" fill="#0e1f33">receita aprovada pelo farmacêutico (UC06)</text>
+<text x="431.0" y="168" font-size="14" text-anchor="end" fill="#0e1f33">ou renovação com receita válida (D04)</text>
+<path d="M445.0 248 V308" fill="none" stroke="#455867" stroke-width="1.8" marker-end="url(#s)"/>
+<text x="431.0" y="274" font-size="14" text-anchor="end" fill="#0e1f33">Box finalizada · baixa definitiva (RN06)</text>
+<path d="M445.0 368 V428" fill="none" stroke="#455867" stroke-width="1.8" marker-end="url(#s)"/>
+<text x="431.0" y="394" font-size="14" text-anchor="end" fill="#0e1f33">entregador inicia a rota (UC10)</text>
+<path d="M445.0 488 V548" fill="none" stroke="#455867" stroke-width="1.8" marker-end="url(#s)"/>
+<text x="431.0" y="510" font-size="14" text-anchor="end" fill="#0e1f33">entrega confirmada com o nome</text>
+<text x="431.0" y="528" font-size="14" text-anchor="end" fill="#0e1f33">de quem recebeu (RN14)</text>
+<path d="M560 579 H606" fill="none" stroke="#455867" stroke-width="1.8" marker-end="url(#s)"/>
+<circle cx="619" cy="579" r="11" fill="none" stroke="#0e1f33" stroke-width="2"/><circle cx="619" cy="579" r="6" fill="#0e1f33"/>
+<path d="M560 459 C635 459 635 339 562 339" fill="none" stroke="#455867" stroke-width="1.8" marker-end="url(#s)"/>
+<text x="630" y="396" font-size="14" text-anchor="start" fill="#0e1f33">ocorrência na entrega:</text>
+<text x="630" y="414" font-size="14" text-anchor="start" fill="#0e1f33">volta à fila e a próxima</text>
+<text x="630" y="432" font-size="14" text-anchor="start" fill="#0e1f33">saída é nova tentativa</text>
+<rect x="740" y="70" width="210" height="58" rx="12" fill="#f5f7f9" stroke="#455867" stroke-width="2"/>
+<text x="845.0" y="95" font-size="17" font-weight="700" text-anchor="middle" fill="#0e1f33">Recusado</text>
+<text x="845.0" y="115" font-size="14" text-anchor="middle" fill="#455867">Receita recusada</text>
+<rect x="740" y="190" width="210" height="58" rx="12" fill="#f5f7f9" stroke="#455867" stroke-width="2"/>
+<text x="845.0" y="215" font-size="17" font-weight="700" text-anchor="middle" fill="#0e1f33">Cancelado</text>
+<text x="845.0" y="235" font-size="14" text-anchor="middle" fill="#455867">Cancelado</text>
+<path d="M560 99 H738" fill="none" stroke="#455867" stroke-width="1.8" marker-end="url(#s)"/>
+<text x="650.0" y="90" font-size="14" text-anchor="middle" fill="#0e1f33">receita recusada</text>
+<text x="650.0" y="120" font-size="14" text-anchor="middle" fill="#455867">libera a reserva</text>
+<path d="M540 128 C540 219 650 219 738 219" fill="none" stroke="#455867" stroke-width="1.8" marker-end="url(#s)"/>
+<text x="670" y="250" font-size="14" text-anchor="middle" fill="#0e1f33">paciente cancela</text>
+<text x="670" y="268" font-size="14" text-anchor="middle" fill="#455867">libera a reserva (RN07)</text>
+<path d="M950 99 H970" fill="none" stroke="#455867" stroke-width="1.8" marker-end="url(#s)"/>
+<circle cx="983" cy="99" r="11" fill="none" stroke="#0e1f33" stroke-width="2"/><circle cx="983" cy="99" r="6" fill="#0e1f33"/>
+<path d="M950 219 H970" fill="none" stroke="#455867" stroke-width="1.8" marker-end="url(#s)"/>
+<circle cx="983" cy="219" r="11" fill="none" stroke="#0e1f33" stroke-width="2"/><circle cx="983" cy="219" r="6" fill="#0e1f33"/>
+<rect x="690" y="510" width="290" height="114" rx="10" fill="#fff8e6" stroke="#c9a55a" stroke-width="1.5"/>
+<text x="706" y="536" font-size="14" text-anchor="start" fill="#3a2a10">RN08 — Qualquer transição fora deste</text>
+<text x="706" y="554" font-size="14" text-anchor="start" fill="#3a2a10">diagrama é recusada com 409 e não</text>
+<text x="706" y="572" font-size="14" text-anchor="start" fill="#3a2a10">altera o estoque. Cada transição grava</text>
+<text x="706" y="590" font-size="14" text-anchor="start" fill="#3a2a10">data, hora, autor e motivo (RF20).</text>
+</svg>

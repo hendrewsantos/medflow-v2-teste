@@ -1,0 +1,23 @@
+sequenceDiagram
+  autonumber
+  actor O as Operador
+  participant W as App Web
+  participant C as PedidosController
+  participant S as PedidoService
+  participant D as Domínio
+  participant DB as MySQL
+  O->>W: abre o pedido Em separação
+  W-->>O: etiquetas por sachê (horário, medicamento, dose, lote, validade)
+  O->>O: separa e etiqueta os sachês dos lotes indicados
+  O->>W: confirma "Finalizar Box e dar baixa"
+  W->>C: POST /api/pedidos/{id}/finalizar-box
+  C->>S: FinalizarBoxAsync(id)
+  S->>DB: pedido com itens, alocações e lotes
+  S->>D: pedido.FinalizarBox(operador)
+  D->>D: transição Em separação → Aguardando entregador? (RN08)
+  loop cada alocação de lote
+    D->>D: lote.BaixarReservado(q): físico − q e reservado − q (RN06)
+  end
+  D-->>S: movimentações de Baixa
+  S->>DB: SaveChanges (concorrência otimista no lote)
+  C-->>W: 200 OK { status: AguardandoEntregador }

@@ -1,0 +1,23 @@
+# Sobe MySQL 8 + API para testes locais:  docker compose up --build
+# Depois rode o front-end com:  cd frontend && npm install && npm run dev
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-troque-esta-senha}
+      MYSQL_DATABASE: medflow_v2
+    ports: ["3306:3306"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 20
+  api:
+    build: ./backend
+    depends_on:
+      mysql: { condition: service_healthy }
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__MedFlow: server=mysql;port=3306;database=medflow_v2;user=root;password=${MYSQL_ROOT_PASSWORD:-troque-esta-senha}
+      Jwt__Chave: ${JWT_CHAVE:-chave-local-de-teste-com-pelo-menos-32-caracteres}
+      Cors__Origens__0: http://localhost:5173
+    ports: ["8080:8080"]

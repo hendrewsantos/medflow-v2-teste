@@ -1,0 +1,31 @@
+sequenceDiagram
+  autonumber
+  actor E as Entregador
+  participant W as App Web (celular)
+  participant C as EntregasController
+  participant S as EntregaService
+  participant D as Domínio
+  participant DB as MySQL
+  actor P as Paciente
+  E->>W: escolhe uma Box pronta e toca "Iniciar rota"
+  W->>C: POST /api/entregas/{id}/iniciar
+  C->>S: IniciarRotaAsync(id)
+  S->>D: pedido.IniciarRota(entregador) — nova tentativa
+  S->>DB: SaveChanges
+  C-->>W: 200 OK (Em rota)
+  P-->>W: vê "Saiu para entrega" no painel dele
+  alt entregue
+    E->>W: informa quem recebeu
+    W->>C: POST /api/entregas/{id}/confirmar { recebedor }
+    C->>S: ConfirmarAsync(id, recebedor)
+    S->>D: pedido.ConfirmarEntrega() — só o entregador da rota, recebedor obrigatório (RN14)
+    S->>DB: SaveChanges
+    C-->>W: 200 OK (Entregue)
+  else não foi possível entregar
+    E->>W: registra a ocorrência (ex.: destinatário ausente)
+    W->>C: POST /api/entregas/{id}/ocorrencia { motivo }
+    C->>S: RegistrarOcorrenciaAsync(id, motivo)
+    S->>D: pedido.RegistrarOcorrencia() — volta para Aguardando entregador
+    S->>DB: SaveChanges
+    C-->>W: 200 OK
+  end

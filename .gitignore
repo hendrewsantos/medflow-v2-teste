@@ -1,0 +1,14 @@
+# .NET
+bin/
+obj/
+*.user
+.vs/
+backend/src/MedFlow.Api/storage/
+# Node
+node_modules/
+dist/
+.env
+.env.local
+# Sistema
+.DS_Store
+Thumbs.db

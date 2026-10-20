@@ -1,0 +1,41 @@
+sequenceDiagram
+  autonumber
+  actor P as Paciente
+  participant W as App Web
+  participant C as PedidosController
+  participant S as PedidoService
+  participant D as Domínio
+  participant DB as MySQL
+  P->>W: revisa a Box e confirma o pedido
+  W->>C: POST /api/pedidos { receitaId, itens, endereço }
+  C->>S: ConfirmarAsync(usuário, request)
+  S->>DB: carrega receita
+  S->>S: dono da receita? em análise ou aprovada e válida? (RN02)
+  S->>DB: existe outra Box em preparação? (RN12)
+  S->>DB: carrega medicamentos com lotes
+  S->>D: monta Tratamento e sachês (RN09, RN11)
+  D-->>S: necessidade do ciclo = doses/dia × 30
+  S->>D: Reservar(pedido, necessidades, lotes)
+  D->>D: planeja FEFO só com lotes válidos até o fim do ciclo (RN04)
+  alt falta saldo em algum item
+    D-->>S: EstoqueInsuficienteException { faltas }
+    S-->>C: nada foi alterado
+    C-->>W: 409 Conflict { faltas }
+    W-->>P: mostra o que falta e permite ajustar
+  else todos os itens atendidos
+    D->>D: reserva as quantidades em cada lote e incrementa Lote.Versao
+    D-->>S: movimentações de Reserva
+    opt receita já aprovada (renovação)
+      S->>D: pedido.IniciarSeparacao()
+    end
+    S->>DB: SaveChanges — tratamento + pedido + reservas em uma transação
+    alt outro pedido alterou o mesmo lote (Versao mudou)
+      DB-->>S: DbUpdateConcurrencyException
+      S-->>C: ConflitoException — nada gravado
+      C-->>W: 409 "Tente novamente"
+    else gravado
+      DB-->>S: ok
+      C-->>W: 201 Created { pedido, status, histórico }
+      W-->>P: "Pedido confirmado e estoque reservado"
+    end
+  end

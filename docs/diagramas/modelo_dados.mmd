@@ -1,0 +1,116 @@
+erDiagram
+  USUARIOS ||--o{ CONSENTIMENTOS : concede
+  USUARIOS ||--o{ RECEITAS : envia
+  USUARIOS ||--o{ TRATAMENTOS : possui
+  RECEITAS ||--o{ TRATAMENTOS : sustenta
+  TRATAMENTOS ||--|{ SACHES : "compõe-se de"
+  MEDICAMENTOS ||--o{ SACHES : "aparece em"
+  MEDICAMENTOS ||--|{ LOTES : "tem"
+  TRATAMENTOS ||--o{ PEDIDOS : "gera um por ciclo"
+  USUARIOS ||--o{ PEDIDOS : "titular"
+  PEDIDOS ||--|{ PEDIDO_ITENS : contém
+  MEDICAMENTOS ||--o{ PEDIDO_ITENS : ""
+  PEDIDO_ITENS ||--|{ ALOCACOES_LOTE : "reservado em"
+  LOTES ||--o{ ALOCACOES_LOTE : ""
+  PEDIDOS ||--|{ HISTORICO_PEDIDOS : registra
+  PEDIDOS ||--o{ ENTREGAS : "tentativas"
+  LOTES ||--o{ MOVIMENTACOES_ESTOQUE : movimenta
+  PEDIDOS |o--o{ MOVIMENTACOES_ESTOQUE : origina
+  USUARIOS {
+    int Id PK
+    string Nome
+    string Email UK
+    string Cpf UK
+    string SenhaHash "PBKDF2 + salt"
+    string Perfil
+    int FalhasLogin
+    datetime BloqueadoAte
+    datetime AnonimizadoEm
+  }
+  CONSENTIMENTOS {
+    int Id PK
+    int UsuarioId FK
+    string Tipo "TermosDeUso | DadosDeSaude"
+    string VersaoTermo
+    datetime ConcedidoEm
+  }
+  RECEITAS {
+    int Id PK
+    int PacienteId FK
+    string CaminhoArquivo
+    string Status
+    date ValidaAte
+    string MotivoRecusa
+  }
+  MEDICAMENTOS {
+    int Id PK
+    string Nome
+    string Concentracao
+    string Tarja
+    bool ControleEspecial
+    int NivelMinimo
+  }
+  LOTES {
+    int Id PK
+    int MedicamentoId FK
+    string Numero
+    date Validade
+    int QuantidadeFisica
+    int QuantidadeReservada
+    int Versao "token de concorrência"
+  }
+  TRATAMENTOS {
+    int Id PK
+    int PacienteId FK
+    int ReceitaId FK
+  }
+  SACHES {
+    int Id PK
+    int TratamentoId FK
+    int MedicamentoId FK
+    string Horario "HH:mm"
+    int Quantidade
+  }
+  PEDIDOS {
+    int Id PK
+    int PacienteId FK
+    int TratamentoId FK
+    int ReceitaId FK
+    string Status
+    string EnderecoEntrega
+  }
+  PEDIDO_ITENS {
+    int Id PK
+    int PedidoId FK
+    int MedicamentoId FK
+    int Quantidade
+  }
+  ALOCACOES_LOTE {
+    int Id PK
+    int PedidoItemId FK
+    int LoteId FK
+    int Quantidade
+  }
+  HISTORICO_PEDIDOS {
+    int Id PK
+    int PedidoId FK
+    string De
+    string Para
+    datetime Em
+  }
+  ENTREGAS {
+    int Id PK
+    int PedidoId FK
+    int EntregadorId FK
+    int Tentativa
+    string Resultado
+    string Recebedor
+  }
+  MOVIMENTACOES_ESTOQUE {
+    int Id PK
+    int LoteId FK
+    int PedidoId FK
+    string Tipo
+    int Quantidade
+    datetime Em
+  }

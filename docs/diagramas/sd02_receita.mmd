@@ -1,0 +1,25 @@
+sequenceDiagram
+  autonumber
+  actor P as Paciente
+  participant W as App Web
+  participant C as ReceitasController
+  participant S as ReceitaService
+  participant A as ArquivoStorage
+  participant DB as MySQL
+  P->>W: escolhe o arquivo e marca o consentimento de dados de saúde
+  W->>C: POST /api/receitas (multipart, Bearer JWT)
+  C->>C: [Authorize(Policy = Paciente)] valida o token
+  C->>S: EnviarAsync(usuário, bytes, nome, consentimento)
+  S->>S: valida consentimento (art. 11, I), tamanho ≤ 10 MB, extensão e assinatura binária
+  alt dado inválido
+    S-->>C: ValidacaoException
+    C-->>W: 400 Bad Request { erros }
+  else válido
+    S->>DB: registra Consentimento(DadosDeSaude, versão, data/hora)
+    S->>A: SalvarAsync(bytes) — nome gerado pelo sistema, fora do wwwroot
+    A-->>S: caminho interno
+    S->>DB: INSERT Receita (status Pendente)
+    S-->>C: ReceitaDto
+    C-->>W: 201 Created
+    W-->>P: "Receita enviada — em análise"
+  end

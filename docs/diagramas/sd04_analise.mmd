@@ -1,0 +1,28 @@
+sequenceDiagram
+  autonumber
+  actor F as Farmacêutico RT
+  participant W as App Web
+  participant C as ReceitasController
+  participant S as ReceitaService
+  participant D as Domínio
+  participant DB as MySQL
+  F->>W: abre a fila e compara a receita com os itens pedidos
+  alt aprovar
+    W->>C: POST /api/receitas/{id}/aprovar { validaAte }
+    C->>C: [Authorize(Policy = Farmaceutico)]
+    C->>S: AprovarAsync(id, validaAte)
+    S->>D: receita.Aprovar(farmacêutico, validaAte)
+    S->>DB: pedidos Pendentes desta receita
+    S->>D: pedido.IniciarSeparacao() — histórico registrado (RN13)
+    S->>DB: SaveChanges
+    C-->>W: 200 OK
+  else recusar
+    W->>C: POST /api/receitas/{id}/recusar { motivo }
+    C->>S: RecusarAsync(id, motivo)
+    S->>D: receita.Recusar(motivo ≥ 5 caracteres)
+    S->>DB: pedidos Pendentes com itens, alocações e lotes
+    S->>D: pedido.Recusar() — libera a reserva lote a lote (RN07)
+    S->>DB: SaveChanges (status + movimentações LiberacaoReserva)
+    C-->>W: 200 OK
+  end
+  Note over F,C: Operador (perfil Funcionário) recebe 403: só o farmacêutico analisa receitas.

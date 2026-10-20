@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Camada de Aplicação: casos de uso (serviços), DTOs e contratos. Depende só do Domínio e da abstração do EF Core. -->
+  <ItemGroup>
+    <ProjectReference Include="..\MedFlow.Domain\MedFlow.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="MedFlow.Application.Tests" />
+  </ItemGroup>
+</Project>
