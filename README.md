@@ -1,149 +1,117 @@
-# MedFlow Solutions · v2 (repositório de teste)
+# Identificação
 
-Recriação do sistema do PIM III (UNIP · ADS) a partir da **especificação de requisitos revisada (ISO/IEC/IEEE 29148)**,
-dos **casos de uso**, dos **diagramas de sequência** e dos **casos de teste** do documento que acompanha este repositório.
-É um repositório separado: o repositório original do grupo não foi alterado.
+- **Nome:** Hendrew dos Santos Braz
+- **RA:** H76FBE0
+- **Turma:** DS4Q40
 
-> A dose certa, no horário certo, sem interromper o tratamento.
-> O paciente envia a receita e monta a Box; a farmacêutica valida; a equipe separa com rastreio de lote; o entregador leva até a porta.
+## Comandos usados
 
-## O que mudou em relação à versão do PIM
+Primeiro conferi a versão do .NET instalada e rodei os dois projetos:
 
-| Problema encontrado na revisão | Como a v2 resolve | Requisito |
+```powershell
+dotnet --list-sdks                  # apareceu o SDK 8.0.419
+dotnet run --project EfLab
+dotnet run --project PipelineLab
+```
+
+Depois salvei as saídas em arquivos pelo PowerShell, para usar como evidência:
+
+```powershell
+dotnet run --project EfLab | Out-File -Encoding utf8 ef_saida.txt
+dotnet run --project PipelineLab | Out-File -Encoding utf8 pipe_limite1.txt   # rodando com limite 1
+dotnet run --project PipelineLab | Out-File -Encoding utf8 pipe_limite2.txt   # rodando com limite 2
+Get-Content ... | Out-File -Append evidencias.txt                              # juntei tudo em um arquivo só
+```
+
+## Respostas C1–C5
+
+**C1. Onde a consulta é executada? O que muda se materializar antes de filtrar?**
+
+A consulta roda no banco de dados, e não no C#. O EF pega o LINQ e transforma em SQL, e dá para ver isso pelo `ToQueryString()`, que mostrou o `WHERE`, o `JOIN` e o `ORDER BY` no SQL gerado.
+
+Se eu chamar o `ToListAsync()` antes do `Where`, o EF traz todos os pedidos do banco para a memória e só depois o filtro é feito no C#. Com isso vêm linhas e colunas que nem vão ser usadas, e o filtro deixa de ser feito pelo banco, que é quem consegue usar os índices.
+
+**C2. Por que AsNoTracking é útil? Por que a projeção escalar já não rastreia entidades?**
+
+Por padrão, o DbContext guarda as entidades que ele leu para saber o que mudou na hora do `SaveChanges()`. Quando a consulta é só para leitura, isso gasta memória e processamento sem necessidade, e o `AsNoTracking()` desliga esse controle. Na execução, a consulta da entidade `Pedido` deixou 1 entidade rastreada, e com `AsNoTracking()` ficou 0.
+
+Já na projeção (`new { p.Id, Cliente, ... }`) o resultado não é uma entidade, é um objeto anônimo só com valores. Então o EF não tem o que rastrear, e por isso apareceu "Rastreados na projeção: 0".
+
+**C3. Diferença entre Endereco e Detalhes (armazenamento e SQL)**
+
+A diferença está em como cada um é salvo no banco:
+
+- **Endereco** é um tipo complexo. Os campos dele viram colunas na própria tabela `Clientes` (`Endereco_UF`, `Endereco_Cidade`).
+- **Detalhes** é um tipo owned mapeado para JSON. Tudo fica em uma coluna só (`Detalhes`) na tabela `Pedidos`, em formato JSON.
+
+Isso muda o SQL do filtro. No Endereco ele compara a coluna direto. No Detalhes o SQL precisa entrar no JSON e pegar o campo pelo caminho:
+
+- Filtro em Endereco: `AND "c"."Endereco_UF" = 'SP'`
+- Filtro em Detalhes: `WHERE "p"."Detalhes" ->> 'Canal' = 'Web'`
+
+**C4. Quando o produtor espera? Diferença entre capacidade da fila e limite do semáforo**
+
+O produtor espera quando o Channel, que é limitado, está cheio. Como ele foi configurado com `FullMode.Wait`, o `WriteAsync` fica aguardando até um consumidor tirar um item e abrir espaço. Isso é o backpressure: o produtor é segurado quando os consumidores não estão dando conta.
+
+Na minha execução (capacidade 4 e 4 consumidores), os itens 1 a 8 esperaram 0 ms, e a espera de uns 120 ms começou no item 9. Pelo que entendi, isso acontece porque 4 itens ficam com os consumidores e outros 4 cabem na fila, então o 9º já não tem lugar.
+
+A capacidade da fila controla quantos itens podem ficar esperando dentro do Channel. O limite do semáforo controla quantos consumidores podem usar o recurso ao mesmo tempo. Um cuida da fila e o outro cuida do acesso ao recurso, então são partes diferentes do fluxo.
+
+**C5. Por que não compartilhar o mesmo DbContext? Como escolher um limite?**
+
+Porque o DbContext não é thread-safe. Ele não aceita duas operações ao mesmo tempo, e quando isso acontece dá o erro "A second operation was started". Então cada consumidor precisa ter o seu próprio DbContext, e mesmo assim tem que dar `await` em cada operação antes de usar o contexto de novo.
+
+Para escolher o limite, eu olharia quanto o banco aguenta, o tamanho do pool de conexões e o fato de que outras rotas do sistema também usam o banco. Não dá para deixar todas as conexões só para os workers. Outro ponto é que o semáforo só funciona dentro de um processo: se tiver mais de uma instância do servidor rodando, cada uma tem o seu semáforo, e ele não controla o total.
+
+## Alteração autoral: previsão e resultado
+
+Na minha alteração, filtrei os pedidos **pendentes** com `TotalCentavos >= 13000`.
+
+**Previsão (antes de rodar):** achei que iam aparecer só os pedidos 6 e 3 (18000 e 15000), porque:
+
+- o pedido 1 (12000) e o 4 (9000) ficam abaixo do mínimo;
+- o pedido 5 (20000) tem valor suficiente, mas está Pago, e o filtro é só de pendentes.
+
+**Resultado da execução:**
+
+```
+6 | Carla | SP | 18000
+3 | Bruno | RJ | 15000
+```
+
+A previsão bateu com a saída.
+
+Também anotei o resultado das consultas da atividade A:
+
+- **A.1** (pendentes >= 9000): IDs 6, 3, 1 e 4.
+- **A.2** (agrupado por UF): RJ = 15000 e SP = 39000. MG não aparece porque o Diego só tem o pedido 5, que está Pago.
+- **A.3** (adicionando `Canal == "Web"`): sobraram 6, 3 e 1. O pedido 4 saiu porque o canal dele é Balcao.
+
+## Experimentos: limite 1 e limite 2
+
+Configuração: 20 trabalhos, capacidade 4, 4 consumidores e `FullMode.Wait`. Rodei duas vezes, mudando só o limite do semáforo.
+
+| | Limite 1 | Limite 2 |
 |---|---|---|
-| Senha gravada em texto puro (`SenhaHash = dto.Senha`) | PBKDF2-SHA256, salt de 16 bytes por senha, 600.000 iterações | RNF01 |
-| Perfil enviado pelo navegador no cabeçalho `X-User-Id` (falsificável) | JWT assinado (HS256, 60 min) + `[Authorize(Policy)]` em cada endpoint | RNF03, RN01 |
-| Baixa de estoque na criação do tratamento, sem transação, ignorando falta | Reserva na confirmação, "tudo ou nada", com concorrência otimista por lote | RN03, RN06 |
-| Tratamento aceito com receita pendente/recusada | Receita obrigatória; separação só após aprovação humana | RN02 |
-| Status do pedido como texto livre | Máquina de estados com transições permitidas e histórico | RN08, RN13 |
-| Lote e validade misturados no cadastro do medicamento | Entidade `Lote`, reserva por FEFO e bloqueio de lote vencido | RN04, RN05 |
-| Endpoints que devolviam CPF e hash; senha do banco no `appsettings.json` | DTOs sem hash, CPF mascarado, segredos em variáveis de ambiente | RNF04, RNF12 |
-| Direitos da LGPD só para o Administrador | Acesso, correção, exportação e exclusão pelo próprio titular | RF19, RN16 |
+| Concluídos | 20/20 | 20/20 |
+| Únicos | 20 | 20 |
+| Pico no recurso | 1 | 2 |
+| IDs | 1 a 20 | 1 a 20 |
 
-## Estrutura
+Nas duas execuções nenhum trabalho se perdeu nem foi processado duas vezes, e o pico de uso do recurso nunca passou do limite configurado.
 
-```
-backend/                     ASP.NET Core 8 — Clean Architecture
-  src/MedFlow.Domain         Entidades e regras puras (sem dependências): Pedido, Lote, Receita, FEFO…
-  src/MedFlow.Application    Casos de uso (serviços), DTOs e contratos
-  src/MedFlow.Infrastructure EF Core + MySQL (Pomelo), PBKDF2, JWT, arquivos de receita
-  src/MedFlow.Api            Controllers finos, JWT, CORS, limite de tentativas, Swagger
-  tests/                     xUnit: domínio (regras) e aplicação (banco em memória)
-frontend/                    Vue 3 + Vite + Pinia + Vue Router + Axios
-  src/domain/regras.js       As mesmas regras do domínio em JavaScript
-  src/services/http.js       Cliente da API (JWT no cabeçalho Authorization)
-  src/services/mock/         Servidor de demonstração em memória (modo protótipo)
-  tests/                     Testes das regras e dos fluxos (node --test, sem dependências)
-prototipo/                   Gera o protótipo navegável em um único HTML a partir das mesmas regras
-docs/                        Especificação (ERS ISO/IEC/IEEE 29148), casos de uso, diagramas e casos de teste (Word e PDF)
+O que mudou foi a espera do produtor. Com limite 1, quase todos os envios a partir do item 9 esperaram uns 120 ms. Com limite 2, a espera apareceu alternada (125 ms, 0 ms, 123 ms, 0 ms...), porque agora dois itens terminam juntos e liberam duas vagas na fila de uma vez.
+
+Mas como foram só duas execuções, não dá para afirmar que o limite 2 é mais rápido. Também reparei que a ordem em que os trabalhos terminam muda de uma execução para outra, mas isso não é problema, porque todos foram concluídos certinho.
+
+## Dificuldade e solução
+
+Quando fui gerar o `evidencias.txt`, a saída do PipelineLab ficou com o acento quebrado (aparecia "Conclu├¡dos" em vez de "Concluídos"). O problema era a codificação que o PowerShell estava usando para gravar o arquivo. Resolvi configurando o console para UTF-8:
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 ```
 
-## Abrir o protótipo (sem instalar nada)
+Depois gerei os arquivos de novo e conferi com `Select-String` se tinha ficado certo. Apareceu "Concluídos: 20/20".
 
-- **No computador:** abra `docs/MedFlow_Prototipo.html` com dois cliques (Chrome, Edge ou Firefox). Entre com uma das pessoas de exemplo.
-- **Pelo GitHub (link para a banca):** no repositório, vá em *Settings → Pages*, escolha *Deploy from a branch*,
-  branch `main` e pasta `/docs`, e salve. Em alguns minutos o protótipo abre em
-  `https://SEU-USUARIO.github.io/medflow-v2-teste/` (o arquivo `docs/index.html` é o próprio protótipo).
-  No plano gratuito do GitHub, o Pages só funciona com repositório público.
-
-## Como rodar
-
-Há três jeitos. Escolha **um**. Os comandos são para o PowerShell (no Windows) ou qualquer terminal.
-
-| Quero... | Preciso instalar | Seção |
-|---|---|---|
-| Ver o sistema completo (front + back + banco) com poucos comandos | Docker Desktop e Node.js 20+ | **A** |
-| Ver o sistema completo, sem Docker | .NET 8 SDK, MySQL 8 e Node.js 20+ | **B** |
-| Só a interface, com dados simulados (sem API nem banco) | Node.js 20+ | **C** |
-
-### A) Sistema completo com Docker (recomendado)
-
-Abra o Docker Desktop e espere ele ficar "Running". Depois, **no terminal 1**, na raiz do projeto:
-
-```bash
-docker compose up --build
-```
-
-A primeira vez demora (baixa o MySQL e compila a API). Quando aparecer `Now listening on: http://[::]:8080`, a API está no ar
-(Swagger em http://localhost:8080/swagger). Deixe esse terminal aberto.
-
-**No terminal 2**, na raiz do projeto:
-
-```bash
-cd frontend
-"VITE_API_URL=http://localhost:8080/api" | Out-File -Encoding ascii .env.local   # PowerShell
-npm install
-npm run dev
-```
-
-No Linux/macOS, troque a linha do `.env.local` por: `echo "VITE_API_URL=http://localhost:8080/api" > .env.local`
-
-Abra **http://localhost:5173** e entre com uma das contas da tabela abaixo.
-Para parar: `Ctrl+C` nos dois terminais e `docker compose down`.
-
-### B) Sistema completo sem Docker
-
-Com o MySQL 8 rodando, **no terminal 1**:
-
-```bash
-cd backend
-dotnet user-secrets init --project src/MedFlow.Api
-dotnet user-secrets set "ConnectionStrings:MedFlow" "server=localhost;port=3306;database=medflow_v2;user=root;password=SUA_SENHA" --project src/MedFlow.Api
-dotnet run --project src/MedFlow.Api
-```
-
-Troque `SUA_SENHA` pela senha do seu MySQL. Em Development o banco é criado e populado sozinho. A API abre em
-https://localhost:7205/swagger (se o navegador reclamar do certificado: `dotnet dev-certs https --trust`).
-
-**No terminal 2:**
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Abra **http://localhost:5173**. Aqui não precisa criar o `.env.local`: o padrão já aponta para `https://localhost:7205/api`.
-
-### C) Só o front-end (modo demonstração)
-
-```bash
-cd frontend
-npm install
-npm run dev:demo
-```
-
-Abra **http://localhost:5173**. Os dados são simulados em memória e voltam ao estado inicial ao recarregar a página.
-
-### Testes
-
-```bash
-cd backend ; dotnet test       # 34 testes de domínio e de aplicação (xUnit)
-cd ../frontend ; npm test      # 21 testes de regras de negócio e fluxos (node --test)
-```
-
-### Contas de exemplo (Development e modo demonstração)
-
-Só existem para teste: são criadas automaticamente quando a API roda em Development (ou no modo demonstração) e não são criadas em produção.
-Mesmo assim a senha é gravada como hash (PBKDF2), nunca em texto puro.
-
-| Perfil | E-mail | Senha |
-|---|---|---|
-| Paciente | carlos@email.com | MedFlow2026 |
-| Farmacêutica RT (Administrador) | juliana@medflow.com.br | MedFlow2026 |
-| Operador (Funcionário) | bruno@medflow.com.br | MedFlow2026 |
-| Entregador | rafael@medflow.com.br | MedFlow2026 |
-
-## O que foi verificado e o que falta verificar
-
-- **Testado:** regras de negócio em JavaScript e fluxos completos do servidor de demonstração (21 testes aprovados, `npm test`);
-  protótipo navegável percorrido de ponta a ponta no navegador nos quatro perfis, em desktop e celular, tema claro, escuro e alto contraste.
-- **Escrito, a executar:** 34 métodos de teste xUnit (domínio e aplicação), `dotnet test`.
-- **Não compilado no ambiente em que foi gerado:** o back-end C# (sem acesso ao SDK .NET/NuGet) e os componentes `.vue`
-  (sem acesso ao npm). O código segue as APIs padrão do .NET 8 e do Vue 3, mas rode `dotnet build`, `dotnet test`
-  e `npm run build` antes de apresentar e corrija qualquer ajuste pontual que o compilador apontar.
-
-## Rastreabilidade
-
-Cada classe de serviço e cada teste cita o caso de uso (UCxx), o requisito (RFxx/RNFxx), a regra (RNxx) e o caso de teste (CTxx)
-correspondentes do documento de especificação.
+Também tive um erro quando colei um comando grande no terminal: veio junto um caractere a mais (^B) e o comando falhou. Resolvi dividindo em comandos menores e rodando um de cada vez.
