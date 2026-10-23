@@ -38,6 +38,14 @@ prototipo/                   Gera o protótipo navegável em um único HTML a pa
 docs/                        Especificação (ERS ISO/IEC/IEEE 29148), casos de uso, diagramas e casos de teste (Word e PDF)
 ```
 
+## Abrir o protótipo (sem instalar nada)
+
+- **No computador:** abra `docs/MedFlow_Prototipo.html` com dois cliques (Chrome, Edge ou Firefox). Entre com uma das pessoas de exemplo.
+- **Pelo GitHub (link para a banca):** no repositório, vá em *Settings → Pages*, escolha *Deploy from a branch*,
+  branch `main` e pasta `/docs`, e salve. Em alguns minutos o protótipo abre em
+  `https://SEU-USUARIO.github.io/medflow-v2-teste/` (o arquivo `docs/index.html` é o próprio protótipo).
+  No plano gratuito do GitHub, o Pages só funciona com repositório público.
+
 ## Como rodar
 
 **Pré-requisitos:** .NET 8 SDK, MySQL 8, Node.js 20+.
