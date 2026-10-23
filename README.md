@@ -48,35 +48,84 @@ docs/                        Especificação (ERS ISO/IEC/IEEE 29148), casos de 
 
 ## Como rodar
 
-**Pré-requisitos:** .NET 8 SDK, MySQL 8, Node.js 20+.
+Há três jeitos. Escolha **um**. Os comandos são para o PowerShell (no Windows) ou qualquer terminal.
 
-### API
+| Quero... | Preciso instalar | Seção |
+|---|---|---|
+| Ver o sistema completo (front + back + banco) com poucos comandos | Docker Desktop e Node.js 20+ | **A** |
+| Ver o sistema completo, sem Docker | .NET 8 SDK, MySQL 8 e Node.js 20+ | **B** |
+| Só a interface, com dados simulados (sem API nem banco) | Node.js 20+ | **C** |
+
+### A) Sistema completo com Docker (recomendado)
+
+Abra o Docker Desktop e espere ele ficar "Running". Depois, **no terminal 1**, na raiz do projeto:
+
+```bash
+docker compose up --build
+```
+
+A primeira vez demora (baixa o MySQL e compila a API). Quando aparecer `Now listening on: http://[::]:8080`, a API está no ar
+(Swagger em http://localhost:8080/swagger). Deixe esse terminal aberto.
+
+**No terminal 2**, na raiz do projeto:
+
+```bash
+cd frontend
+"VITE_API_URL=http://localhost:8080/api" | Out-File -Encoding ascii .env.local   # PowerShell
+npm install
+npm run dev
+```
+
+No Linux/macOS, troque a linha do `.env.local` por: `echo "VITE_API_URL=http://localhost:8080/api" > .env.local`
+
+Abra **http://localhost:5173** e entre com uma das contas da tabela abaixo.
+Para parar: `Ctrl+C` nos dois terminais e `docker compose down`.
+
+### B) Sistema completo sem Docker
+
+Com o MySQL 8 rodando, **no terminal 1**:
 
 ```bash
 cd backend
-# 1) informe a conexão e a chave do JWT (nunca no código):
 dotnet user-secrets init --project src/MedFlow.Api
 dotnet user-secrets set "ConnectionStrings:MedFlow" "server=localhost;port=3306;database=medflow_v2;user=root;password=SUA_SENHA" --project src/MedFlow.Api
-dotnet user-secrets set "Jwt:Chave" "uma-chave-longa-com-pelo-menos-32-caracteres" --project src/MedFlow.Api
-# 2) rode (em Development o banco é criado e populado com dados de exemplo):
 dotnet run --project src/MedFlow.Api
-# Swagger: https://localhost:7205/swagger
-dotnet test        # testes do domínio e da aplicação
 ```
 
-Ou, com Docker: `docker compose up --build` (MySQL + API na porta 8080).
+Troque `SUA_SENHA` pela senha do seu MySQL. Em Development o banco é criado e populado sozinho. A API abre em
+https://localhost:7205/swagger (se o navegador reclamar do certificado: `dotnet dev-certs https --trust`).
 
-### Front-end
+**No terminal 2:**
 
 ```bash
 cd frontend
 npm install
-npm run dev        # usa a API em VITE_API_URL (veja .env.example)
-npm run dev:demo   # usa o servidor de demonstração, sem API nem banco
-npm test           # 21 testes de regras de negócio e fluxos (node --test, sem dependências)
+npm run dev
+```
+
+Abra **http://localhost:5173**. Aqui não precisa criar o `.env.local`: o padrão já aponta para `https://localhost:7205/api`.
+
+### C) Só o front-end (modo demonstração)
+
+```bash
+cd frontend
+npm install
+npm run dev:demo
+```
+
+Abra **http://localhost:5173**. Os dados são simulados em memória e voltam ao estado inicial ao recarregar a página.
+
+### Testes
+
+```bash
+cd backend ; dotnet test       # 34 testes de domínio e de aplicação (xUnit)
+cd ../frontend ; npm test      # 21 testes de regras de negócio e fluxos (node --test)
 ```
 
 ### Contas de exemplo (Development e modo demonstração)
+
+Só existem para teste: são criadas automaticamente quando a API roda em Development (ou no modo demonstração) e não são criadas em produção.
+Mesmo assim a senha é gravada como hash (PBKDF2), nunca em texto puro.
 
 | Perfil | E-mail | Senha |
 |---|---|---|
